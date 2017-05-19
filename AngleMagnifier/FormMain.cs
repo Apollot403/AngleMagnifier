@@ -64,8 +64,21 @@ namespace AngleMagnifier
 			int w = this.ClientSize.Width;
 			int h = this.ClientSize.Height;
 			lw = (int)(h * 0.3);
-			if (lw % 2 == 1)
-				lw = lw + 1;
+			switch (lw%4)
+			{
+				case 1:
+					lw = lw + 3;
+					break;
+				case 2:
+					lw = lw + 2;
+					break;
+				case 3:
+					lw = lw + 1;
+					break;
+				default:
+					break;
+			}//Mod 4
+			//MessageBox.Show(lw.ToString());
 			Point p = new Point(0, 0);
 			this.Text = "AngleMagnifier";
 			TextView.Text = "按F鍵擷取畫面";
@@ -78,7 +91,7 @@ namespace AngleMagnifier
 
 			panel.Size = new Size((int)w, (int)h);
 			pictureBox.Size = new Size((int)w, (int)h);
-			picturelarge.Size = new Size(160,160);//Edit Needs
+			picturelarge.Size = new Size(lw,lw);//Edit Needs
 
             panel.Location = p;
 			TextView.Location = new Point(0, this.ClientSize.Height - TextView.Height);
@@ -86,7 +99,7 @@ namespace AngleMagnifier
 			TextAngle1.Location = new Point(100, 0);
 			pictureBox.Location = p;
 
-			Rec = new Rectangle(0, 0, 160,160);//Create Rectangle for catch
+			Rec = new Rectangle(0, 0, lw,lw);//Create Rectangle for catch
 			pen1 = new Pen(Color.FromArgb(RGB_A, 0, 255, 0), Pen_width);//Create Pen
 			pen = new Pen(Color.FromArgb(RGB_A, 0, 0, 255), Pen_width);//Create pen1
 			pen_DL = new Pen(Color.FromArgb((int)(255*0.7), 255, 0, 0), 6);//Create pen for draw a Dot
@@ -98,7 +111,7 @@ namespace AngleMagnifier
 
 			IM_Form = new Bitmap((int)w, (int)h);//Catch Screen
 			G = Graphics.FromImage(IM_Form);//Catch Screen
-			Largecatch = new Bitmap(160,160);//Mul box 80,80
+			Largecatch = new Bitmap(lw,lw);//Mul box 80,80
 			Glargecatch = Graphics.FromImage(Largecatch);//Mul box
 		}
 
@@ -162,7 +175,7 @@ namespace AngleMagnifier
 						Timer1.Enabled = true;
 						picturelarge.Visible = true;
                         TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
-						//Cursor.Hide();
+						Cursor.Hide();
 					}
 					break;
 
@@ -194,8 +207,8 @@ namespace AngleMagnifier
                         }
                         else
                         {
-                            Pa1.x = e.X + 80;//Edit Needs
-                            Pa1.y = e.Y + 40;
+                            Pa1.x = e.X + (lw/2);//Edit Needs
+                            Pa1.y = e.Y + (lw/4);
                             inlarged = false;
                         }
                         break;
@@ -207,8 +220,8 @@ namespace AngleMagnifier
                         }
                         else
                         {
-                            Pcom1.x = e.X + 80;//Edit Needs
-                            Pcom1.y = e.Y + 40;
+                            Pcom1.x = e.X + (lw/2);//Edit Needs
+                            Pcom1.y = e.Y + (lw/4);
                             inlarged = false;
                         }
                         if (count_Angle == 1)
@@ -227,8 +240,8 @@ namespace AngleMagnifier
                         }
                         else
                         {
-                            Pb1.x = e.X + 80;//Edit Needs
-                            Pb1.y = e.Y + 40;
+                            Pb1.x = e.X + (lw/2);//Edit Needs
+                            Pb1.y = e.Y + (lw/4);
                             inlarged = false;
                         }
                         if (count_Angle == 1)
@@ -272,9 +285,9 @@ namespace AngleMagnifier
 			int y = PointToClient(Cursor.Position).Y;
 			if (inlarged)
 			{
-				Glargecatch.DrawImage(Tmp, Rec, x + 40, y , 80, 80, GraphicsUnit.Pixel);//Edit Needs
-                Glargecatch.DrawLine(pen_DL, 77, 80, 83, 80);
-				picturelarge.Location = new Point(x, y - 40);
+				Glargecatch.DrawImage(Tmp, Rec, x + (lw / 4), y, (lw / 2), (lw / 2), GraphicsUnit.Pixel);//Edit Needs
+                Glargecatch.DrawLine(pen_DL, (lw / 2)-3, (lw / 2), (lw / 2)+3, (lw / 2));
+				picturelarge.Location = new Point(x, y - (lw / 4));
 				picturelarge.Image = Largecatch;
 				IntPtr dc = G.GetHdc();
 				G.ReleaseHdc(dc);
