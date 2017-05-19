@@ -25,7 +25,7 @@ namespace AngleMagnifier
 		{
 			this.Text = "AngleMagnifier";
 			label_now.Location = new Point(0, this.Height - label_now.Height);
-			//Keyboard.ClearFocus();
+			Keyboard.ClearFocus();
 			timer.Enabled = true;
 			label_now.Text = DateTime.Now.ToShortTimeString().ToString();
 		}

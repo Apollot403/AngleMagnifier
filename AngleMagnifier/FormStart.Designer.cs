@@ -42,9 +42,9 @@
 			this.label_now.AutoSize = true;
 			this.label_now.BackColor = System.Drawing.Color.Transparent;
 			this.label_now.Font = new System.Drawing.Font("微軟正黑體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label_now.Location = new System.Drawing.Point(0, this.Size.Height-this.label_now.Size.Height);
+			this.label_now.Location = new System.Drawing.Point(0, 20);
 			this.label_now.Name = "label_now";
-			this.label_now.Size = new System.Drawing.Size(112, 27);
+			this.label_now.Size = new System.Drawing.Size(119, 28);
 			this.label_now.TabIndex = 0;
 			this.label_now.Text = "上午 11:02";
 			// 
