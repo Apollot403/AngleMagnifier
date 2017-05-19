@@ -30,6 +30,8 @@ namespace AngleMagnifier
 
 		private void FormStreak_Load(object sender, EventArgs e)
 		{
+			this.Size = new Size((int)(SystemInformation.PrimaryMonitorSize.Width * 0.9),
+												(int)(SystemInformation.PrimaryMonitorSize.Height * 0.9));
 			int x = this.ClientSize.Width;
 			int y = this.ClientSize.Height;
 			this.Text = "AngleMagnifier";
@@ -40,7 +42,6 @@ namespace AngleMagnifier
 			panel.Size = new Size(this.ClientSize.Width, this.ClientSize.Height);
 			IM_Form = new Bitmap(x, y);
 			G = Graphics.FromImage(IM_Form);
-
 		}
 
 		private void FormStreak_KeyDown(object sender, KeyEventArgs e)
