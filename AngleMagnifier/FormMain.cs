@@ -66,7 +66,6 @@ namespace AngleMagnifier
 			lw = (int)(h * 0.3);
 			if (lw % 2 == 1)
 				lw = lw + 1;
-			MessageBox.Show(lw.ToString());
 			Point p = new Point(0, 0);
 			this.Text = "AngleMagnifier";
 			TextView.Text = "按F鍵擷取畫面";
@@ -121,7 +120,7 @@ namespace AngleMagnifier
 																				(Location.Y + Size.Height - ClientSize.Height - 8))
 																	, new Point(0, 0), new Size(panel.Width, panel.Height));
 						this.pictureBox.Image = IM_Form;
-						Tmp = IM_Form.Clone(new Rectangle(0, 0, IM_Form.Width, IM_Form.Height), IM_Form.PixelFormat);
+						Tmp = IM_Form.Clone(new Rectangle(0, 0, IM_Form.Width, IM_Form.Height), IM_Form.PixelFormat);//Copy
 
 						IntPtr dc = G.GetHdc();
 						G.ReleaseHdc(dc);
@@ -147,8 +146,6 @@ namespace AngleMagnifier
 					pictureBox.Visible = false;
 					picturelarge.Visible = false;
 					pictureBox.Image = null;
-					//picturelarge.Image = null;
-					//Largecatch = null;
 					G.Clear(Color.Transparent);
 					TextAngle.Visible = false;
 					TextAngle1.Visible = false;
@@ -165,7 +162,7 @@ namespace AngleMagnifier
 						Timer1.Enabled = true;
 						picturelarge.Visible = true;
                         TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
-						Cursor.Hide();
+						//Cursor.Hide();
 					}
 					break;
 
