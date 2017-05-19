@@ -38,6 +38,7 @@ namespace AngleMagnifier
 			this.picturelarge = new System.Windows.Forms.PictureBox();
 			this.Timer1 = new System.Windows.Forms.Timer(this.components);
 			this.TextAngle1 = new System.Windows.Forms.Label();
+			this.Text_x = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picturelarge)).BeginInit();
 			this.SuspendLayout();
@@ -112,12 +113,26 @@ namespace AngleMagnifier
 			this.TextAngle1.Text = ".";
 			this.TextAngle1.Visible = false;
 			// 
+			// Text_x
+			// 
+			this.Text_x.AutoSize = true;
+			this.Text_x.BackColor = System.Drawing.Color.Gainsboro;
+			this.Text_x.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.Text_x.ForeColor = System.Drawing.Color.Blue;
+			this.Text_x.Location = new System.Drawing.Point(154, 58);
+			this.Text_x.Name = "Text_x";
+			this.Text_x.Size = new System.Drawing.Size(19, 30);
+			this.Text_x.TabIndex = 6;
+			this.Text_x.Text = ".";
+			this.Text_x.Visible = false;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(1064, 676);
+			this.Controls.Add(this.Text_x);
 			this.Controls.Add(this.TextAngle1);
 			this.Controls.Add(this.picturelarge);
 			this.Controls.Add(this.TextAngle);
@@ -148,6 +163,7 @@ namespace AngleMagnifier
 		private System.Windows.Forms.PictureBox picturelarge;
 		private System.Windows.Forms.Timer Timer1;
 		private System.Windows.Forms.Label TextAngle1;
+		private System.Windows.Forms.Label Text_x;
 	}
 }
 

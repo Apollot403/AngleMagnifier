@@ -59,12 +59,12 @@ namespace AngleMagnifier
 
 		private void FormMain_Load(object sender, EventArgs e)
 		{
-            this.Size = new Size((int)(SystemInformation.PrimaryMonitorSize.Width * 0.9),
+			this.Size = new Size((int)(SystemInformation.PrimaryMonitorSize.Width * 0.9),
 												(int)(SystemInformation.PrimaryMonitorSize.Height * 0.9));
 			int w = this.ClientSize.Width;
 			int h = this.ClientSize.Height;
 			lw = (int)(h * 0.3);
-			switch (lw%4)
+			switch (lw % 4)
 			{
 				case 1:
 					lw = lw + 3;
@@ -78,7 +78,7 @@ namespace AngleMagnifier
 				default:
 					break;
 			}//Mod 4
-			//MessageBox.Show(lw.ToString());
+			 //MessageBox.Show(lw.ToString());
 			Point p = new Point(0, 0);
 			this.Text = "AngleMagnifier";
 			TextView.Text = "按F鍵擷取畫面";
@@ -91,18 +91,18 @@ namespace AngleMagnifier
 
 			panel.Size = new Size((int)w, (int)h);
 			pictureBox.Size = new Size((int)w, (int)h);
-			picturelarge.Size = new Size(lw,lw);//Edit Needs
+			picturelarge.Size = new Size(lw, lw);//Edit Needs
 
-            panel.Location = p;
+			panel.Location = p;
 			TextView.Location = new Point(0, this.ClientSize.Height - TextView.Height);
 			TextAngle.Location = p;
 			TextAngle1.Location = new Point(100, 0);
 			pictureBox.Location = p;
 
-			Rec = new Rectangle(0, 0, lw,lw);//Create Rectangle for catch
+			Rec = new Rectangle(0, 0, lw, lw);//Create Rectangle for catch
 			pen1 = new Pen(Color.FromArgb(RGB_A, 0, 255, 0), Pen_width);//Create Pen
 			pen = new Pen(Color.FromArgb(RGB_A, 0, 0, 255), Pen_width);//Create pen1
-			pen_DL = new Pen(Color.FromArgb((int)(255*0.7), 255, 0, 0), 6);//Create pen for draw a Dot
+			pen_DL = new Pen(Color.FromArgb((int)(255 * 0.7), 255, 0, 0), 6);//Create pen for draw a Dot
 
 			GraphicsPath path = new GraphicsPath();//picturelarge Reshape
 			path.AddEllipse(this.picturelarge.ClientRectangle);
@@ -111,7 +111,7 @@ namespace AngleMagnifier
 
 			IM_Form = new Bitmap((int)w, (int)h);//Catch Screen
 			G = Graphics.FromImage(IM_Form);//Catch Screen
-			Largecatch = new Bitmap(lw,lw);//Mul box 80,80
+			Largecatch = new Bitmap(lw, lw);//Mul box 80,80
 			Glargecatch = Graphics.FromImage(Largecatch);//Mul box
 		}
 
@@ -129,9 +129,9 @@ namespace AngleMagnifier
 						TextView.Visible = false;
 						TextAngle.Visible = false;
 
-						G.CopyFromScreen(new Point((Location.X + Size.Width - ClientSize.Width - 8),//Get form screen
-																				(Location.Y + Size.Height - ClientSize.Height - 8))
-																	, new Point(0, 0), new Size(panel.Width, panel.Height));
+						G.CopyFromScreen(new Point((this.Location.X - PointToClient(this.Location).X),
+																				(this.Location.Y - PointToClient(this.Location).Y)),
+															new Point(0, 0), new Size(panel.Width, panel.Height));
 						this.pictureBox.Image = IM_Form;
 						Tmp = IM_Form.Clone(new Rectangle(0, 0, IM_Form.Width, IM_Form.Height), IM_Form.PixelFormat);//Copy
 
@@ -150,6 +150,7 @@ namespace AngleMagnifier
 					if (inlarged)
 					{
 						Timer1.Enabled = false;
+						Text_x.Visible = false;
 						Cursor.Show();//------------------BG Nusccess
 					}
 					count_Pt = 0;
@@ -174,7 +175,9 @@ namespace AngleMagnifier
 						inlarged = true;
 						Timer1.Enabled = true;
 						picturelarge.Visible = true;
-                        TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
+						Text_x.Visible = true;
+						TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
+						Text_x.Text = "X2";
 						Cursor.Hide();
 					}
 					break;
@@ -187,90 +190,92 @@ namespace AngleMagnifier
 
 		private void PictureBox_Click(object sender, MouseEventArgs e)
 		{
-            if(e.Button==MouseButtons.Left)
-            {
+			if (e.Button == MouseButtons.Left)
+			{
 				if (inlarged == true)
 				{
 					picturelarge.Visible = false;
+					Text_x.Visible = false;
 					Timer1.Enabled = false;
 					TextView.Text = "按D鍵重新擷取  按A鍵使用放大鏡  點選三點計算角度";
 					Cursor.Show();
 				}
 				count_Pt++;
-                switch (count_Pt)
-                {
-                    case 1:
-                        if (inlarged == false)
-                        {
-                            Pa1.x = e.X;
-                            Pa1.y = e.Y;
-                        }
-                        else
-                        {
-                            Pa1.x = e.X + (lw/2);//Edit Needs
-                            Pa1.y = e.Y + (lw/4);
-                            inlarged = false;
-                        }
-                        break;
-                    case 2:
-                        if (inlarged == false)
-                        {
-                            Pcom1.x = e.X;
-                            Pcom1.y = e.Y;
-                        }
-                        else
-                        {
-                            Pcom1.x = e.X + (lw/2);//Edit Needs
-                            Pcom1.y = e.Y + (lw/4);
-                            inlarged = false;
-                        }
-                        if (count_Angle == 1)
-                            G.DrawLine(pen, Pa1.x, Pa1.y, Pcom1.x, Pcom1.y);
-                        else if (count_Angle == 2)
-                            G.DrawLine(pen1, Pa1.x, Pa1.y, Pcom1.x, Pcom1.y);
-                        IntPtr dc = G.GetHdc();
-                        G.ReleaseHdc(dc);
-                        pictureBox.Image = IM_Form;
-                        break;
-                    case 3:
-                        if (inlarged == false)
-                        {
-                            Pb1.x = e.X;
-                            Pb1.y = e.Y;
-                        }
-                        else
-                        {
-                            Pb1.x = e.X + (lw/2);//Edit Needs
-                            Pb1.y = e.Y + (lw/4);
-                            inlarged = false;
-                        }
-                        if (count_Angle == 1)
-                            G.DrawLine(pen, Pcom1.x, Pcom1.y, Pb1.x, Pb1.y);
-                        else if (count_Angle == 2)
-                            G.DrawLine(pen1, Pcom1.x, Pcom1.y, Pb1.x, Pb1.y);
-                        dc = G.GetHdc();
-                        G.ReleaseHdc(dc);
-                        this.pictureBox.Image = IM_Form;
-                        count_Pt = 0;
-                        if (count_Angle == 1)
-                        {
-                            TextAngle.Visible = true;
-                            TextAngle.Text = Degree().ToString("f1");
-                        }
-                        else if (count_Angle == 2)
-                        {
-                            TextAngle1.Visible = true;
-                            TextAngle1.Text = Degree().ToString("f1");
-                        }
-                        count_Angle++;
-                        break;
-                }
+				switch (count_Pt)
+				{
+					case 1:
+						if (inlarged == false)
+						{
+							Pa1.x = e.X;
+							Pa1.y = e.Y;
+						}
+						else
+						{
+							Pa1.x = e.X + (lw / 2);//Edit Needs
+							Pa1.y = e.Y + (lw / 4);
+							inlarged = false;
+						}
+						break;
+					case 2:
+						if (inlarged == false)
+						{
+							Pcom1.x = e.X;
+							Pcom1.y = e.Y;
+						}
+						else
+						{
+							Pcom1.x = e.X + (lw / 2);//Edit Needs
+							Pcom1.y = e.Y + (lw / 4);
+							inlarged = false;
+						}
+						if (count_Angle == 1)
+							G.DrawLine(pen, Pa1.x, Pa1.y, Pcom1.x, Pcom1.y);
+						else if (count_Angle == 2)
+							G.DrawLine(pen1, Pa1.x, Pa1.y, Pcom1.x, Pcom1.y);
+						IntPtr dc = G.GetHdc();
+						G.ReleaseHdc(dc);
+						pictureBox.Image = IM_Form;
+						break;
+					case 3:
+						if (inlarged == false)
+						{
+							Pb1.x = e.X;
+							Pb1.y = e.Y;
+						}
+						else
+						{
+							Pb1.x = e.X + (lw / 2);//Edit Needs
+							Pb1.y = e.Y + (lw / 4);
+							inlarged = false;
+						}
+						if (count_Angle == 1)
+							G.DrawLine(pen, Pcom1.x, Pcom1.y, Pb1.x, Pb1.y);
+						else if (count_Angle == 2)
+							G.DrawLine(pen1, Pcom1.x, Pcom1.y, Pb1.x, Pb1.y);
+						dc = G.GetHdc();
+						G.ReleaseHdc(dc);
+						this.pictureBox.Image = IM_Form;
+						count_Pt = 0;
+						if (count_Angle == 1)
+						{
+							TextAngle.Visible = true;
+							TextAngle.Text = Degree().ToString("f1");
+						}
+						else if (count_Angle == 2)
+						{
+							TextAngle1.Visible = true;
+							TextAngle1.Text = Degree().ToString("f1");
+						}
+						count_Angle++;
+						break;
+				}
 			}
-			else if(e.Button==MouseButtons.Right)
+			else if (e.Button == MouseButtons.Right)
 			{
 				if (inlarged == true)
 				{
 					picturelarge.Visible = false;
+					Text_x.Visible = false;
 					Timer1.Enabled = false;
 					TextView.Text = "按D鍵重新擷取  按A鍵使用放大鏡  點選三點計算角度";
 					inlarged = false;
@@ -286,14 +291,15 @@ namespace AngleMagnifier
 			if (inlarged)
 			{
 				Glargecatch.DrawImage(Tmp, Rec, x + (lw / 4), y, (lw / 2), (lw / 2), GraphicsUnit.Pixel);//Edit Needs
-                Glargecatch.DrawLine(pen_DL, (lw / 2)-3, (lw / 2), (lw / 2)+3, (lw / 2));
+				Glargecatch.DrawLine(pen_DL, (lw / 2) - 3, (lw / 2), (lw / 2) + 3, (lw / 2));
 				picturelarge.Location = new Point(x, y - (lw / 4));
 				picturelarge.Image = Largecatch;
 				IntPtr dc = G.GetHdc();
 				G.ReleaseHdc(dc);
+				Text_x.Location = new Point(x + (int)(lw * 0.85), y + (int)(lw * 0.7));
 			}
 		}
-		
+
 		private void FormMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			try
@@ -301,9 +307,9 @@ namespace AngleMagnifier
 				pF.WindowState = FormWindowState.Normal;
 			}
 			catch
-            {
-                MessageBox.Show("內部錯誤\n請重新開啟程式");
-            }
+			{
+				MessageBox.Show("內部錯誤\n請重新開啟程式");
+			}
 		}
 		private double Degree()
 		{
