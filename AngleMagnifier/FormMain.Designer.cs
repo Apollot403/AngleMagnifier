@@ -116,9 +116,9 @@ namespace AngleMagnifier
 			// Text_x
 			// 
 			this.Text_x.AutoSize = true;
-			this.Text_x.BackColor = System.Drawing.Color.Gainsboro;
+			this.Text_x.BackColor = System.Drawing.Color.Transparent;
 			this.Text_x.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.Text_x.ForeColor = System.Drawing.Color.Blue;
+			this.Text_x.ForeColor = System.Drawing.Color.Orange;
 			this.Text_x.Location = new System.Drawing.Point(154, 58);
 			this.Text_x.Name = "Text_x";
 			this.Text_x.Size = new System.Drawing.Size(19, 30);
@@ -146,6 +146,7 @@ namespace AngleMagnifier
 			this.TransparencyKey = System.Drawing.Color.Silver;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_Closing);
 			this.Load += new System.EventHandler(this.FormMain_Load);
+			this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FormMain_Wheel);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picturelarge)).EndInit();
