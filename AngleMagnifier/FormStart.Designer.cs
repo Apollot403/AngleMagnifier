@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormStart));
 			this.label_now = new System.Windows.Forms.Label();
 			this.button_Start = new System.Windows.Forms.Button();
 			this.button_Streak = new System.Windows.Forms.Button();
@@ -97,6 +98,7 @@
 			this.ClientSize = new System.Drawing.Size(484, 151);
 			this.Controls.Add(this.panel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "FormStart";
 			this.Text = "Form1";

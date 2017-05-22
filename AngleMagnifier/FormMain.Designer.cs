@@ -31,6 +31,7 @@ namespace AngleMagnifier
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.TextView = new System.Windows.Forms.Label();
 			this.panel = new System.Windows.Forms.Panel();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
@@ -140,14 +141,15 @@ namespace AngleMagnifier
 			this.Controls.Add(this.panel);
 			this.Controls.Add(this.pictureBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "FormMain";
 			this.Text = "Form1";
 			this.TransparencyKey = System.Drawing.Color.Silver;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_Closing);
 			this.Load += new System.EventHandler(this.FormMain_Load);
-			this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FormMain_Wheel);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
+			this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.FormMain_Wheel);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picturelarge)).EndInit();
 			this.ResumeLayout(false);

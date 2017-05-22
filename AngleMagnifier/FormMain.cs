@@ -133,7 +133,6 @@ namespace AngleMagnifier
 															new Point(0, 0), new Size(panel.Width, panel.Height));
 						this.pictureBox.Image = IM_Form;
 						Tmp = IM_Form.Clone(new Rectangle(0, 0, IM_Form.Width, IM_Form.Height), IM_Form.PixelFormat);//Copy
-
 						IntPtr dc = G.GetHdc();
 						G.ReleaseHdc(dc);
 						TextView.Text = "按D鍵重新擷取  按A鍵使用放大鏡  點選三點計算角度";
@@ -150,7 +149,7 @@ namespace AngleMagnifier
 					{
 						Timer1.Enabled = false;
 						Text_x.Visible = false;
-						Cursor.Show();//------------------BG Nusccess
+						Cursor.Show();
 					}
 					count_Pt = 0;
 					count_Angle = 1;
@@ -171,6 +170,8 @@ namespace AngleMagnifier
 				case Keys.A:
 					if (catched == true)
 					{
+						Cursor.Position = new Point(Cursor.Position.X - (lw / 2), Cursor.Position.Y - (lw / 4));
+						magn2x = true;
 						inlarged = true;
 						Timer1.Enabled = true;
 						picturelarge.Visible = true;
@@ -178,6 +179,7 @@ namespace AngleMagnifier
 						TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
 						Text_x.Text = "X2";
 						Text_x.Parent = pictureBox;
+						Timer1.Enabled = true;
 						Cursor.Hide();
 					}
 					break;
@@ -263,13 +265,16 @@ namespace AngleMagnifier
 						{
 							TextAngle.Visible = true;
 							TextAngle.Text = Degree().ToString("f1");
-							TextAngle.Location = new Point(Pb1.x,Pb1.y);
+							TextAngle.Location = new Point(Pb1.x+5,Pb1.y+3);
 						}
 						else if (count_Angle == 2)
 						{
 							TextAngle1.Visible = true;
 							TextAngle1.Text = Degree().ToString("f1");
-							TextAngle1.Location = new Point(Pb1.x, Pb1.y);
+							if (Distance(Pb1.x,TextAngle.Location.X)<20||Distance(Pb1.y,TextAngle.Location.Y)<20)
+								TextAngle1.Location = new Point(TextAngle.Location.X, TextAngle.Location.Y - TextAngle1.Height-5);
+							else
+								TextAngle1.Location = new Point(Pb1.x+5, Pb1.y+3);
 						}
 						count_Angle++;
 						break;
@@ -352,6 +357,10 @@ namespace AngleMagnifier
 			degree = Math.Acos(AB / (A * B));
 			degree = degree * 180 / Math.PI;
 			return degree;
+		}
+		private int Distance(int x1,int x2)
+		{
+			return Math.Abs(x1 - x2);
 		}
 	}/////CLASS
 }///////NAMESPACE
