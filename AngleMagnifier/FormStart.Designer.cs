@@ -59,7 +59,7 @@
 			this.button_Start.TabIndex = 1;
 			this.button_Start.Text = "ATD Angle";
 			this.button_Start.UseVisualStyleBackColor = false;
-			this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
+			this.button_Start.Click += new System.EventHandler(this.Button_Start_Click);
 			// 
 			// button_Streak
 			// 
@@ -71,7 +71,7 @@
 			this.button_Streak.TabIndex = 2;
 			this.button_Streak.Text = "Streak";
 			this.button_Streak.UseVisualStyleBackColor = false;
-			this.button_Streak.Click += new System.EventHandler(this.button_Streak_Click);
+			this.button_Streak.Click += new System.EventHandler(this.Button_Streak_Click);
 			// 
 			// panel1
 			// 
@@ -88,7 +88,7 @@
 			// timer
 			// 
 			this.timer.Interval = 1000;
-			this.timer.Tick += new System.EventHandler(this.timer_Tick);
+			this.timer.Tick += new System.EventHandler(this.Timer_Tick);
 			// 
 			// FormStart
 			// 

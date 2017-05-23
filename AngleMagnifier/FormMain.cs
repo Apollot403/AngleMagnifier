@@ -30,9 +30,7 @@ namespace AngleMagnifier
 		Bitmap Tmp;
 		Bitmap Largecatch;//Inlarge
 		Graphics Glargecatch;//Inlarge
-		A_Point Pa1;
-		A_Point Pb1;
-		A_Point Pcom1;
+		A_Point Pa1,Pb1,Pcom1;
 		Pen pen, pen1, pen_DL;
 		Rectangle Rec;
 		#endregion
@@ -79,7 +77,6 @@ namespace AngleMagnifier
 				default:
 					break;
 			}//Mod 4
-			 //MessageBox.Show(lw.ToString());
 			Point p = new Point(0, 0);
 			this.Text = "AngleMagnifier";
 			TextView.Text = "按F鍵擷取畫面";
@@ -127,7 +124,6 @@ namespace AngleMagnifier
 						catched = true;
 						TextView.Visible = false;
 						TextAngle.Visible = false;
-
 						G.CopyFromScreen(new Point((this.Location.X - PointToClient(this.Location).X),
 																				(this.Location.Y - PointToClient(this.Location).Y)),
 															new Point(0, 0), new Size(panel.Width, panel.Height));

@@ -13,13 +13,11 @@ namespace AngleMagnifier
 {
 	public partial class FormStart : Form
 	{
-		
 		public FormStart()
 		{
 			InitializeComponent();
 			this.KeyPreview = true;
 		}
-
 
 		private void FormStart_Load(object sender, EventArgs e)
 		{
@@ -30,27 +28,27 @@ namespace AngleMagnifier
 			label_now.Text = DateTime.Now.ToShortTimeString().ToString();
 		}
 
-		private void button_Start_Click(object sender, EventArgs e)
+		private void Button_Start_Click(object sender, EventArgs e)
 		{
 			FormMain F = new FormMain(this);
 			F.Show();
 			this.WindowState = FormWindowState.Minimized;
 		}
-		private void button_Streak_Click(object sender, EventArgs e)
+		private void Button_Streak_Click(object sender, EventArgs e)
 		{
 			FormStreak Fs = new FormStreak(this);
 			Fs.Show();
 			this.WindowState = FormWindowState.Minimized;
 		}
 
-		private void timer_Tick(object sender, EventArgs e)
+		private void Timer_Tick(object sender, EventArgs e)
 		{
 			label_now.Text = DateTime.Now.ToShortTimeString().ToString();
 		}
 
 		private void FormStart_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
-			if(e.KeyCode==Keys.A)
+			if (e.KeyCode == Keys.A)
 			{
 				FormMain F = new FormMain(this);
 				F.Show();
@@ -58,12 +56,12 @@ namespace AngleMagnifier
 			}
 			if(e.KeyCode==Keys.S)
 			{
-				FormStreak fs = new FormStreak(this);
-				fs.Show();
+				FormStreak Fs = new FormStreak(this);
+				Fs.Show();
 				this.WindowState = FormWindowState.Minimized;
 			}
+			if (e.KeyData == Keys.Escape)
+				this.Close();
 		}
-
-
 	}////Class
 }//////NameSpace
