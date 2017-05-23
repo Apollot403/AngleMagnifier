@@ -16,8 +16,8 @@ namespace AngleMagnifier
 		#region Struct
 		public struct MFunction
 		{
-			public float a, b, c;//ax+by+c=0
-			public MFunction(float a, float b,float c)
+			public double a, b, c;//ax+by+c=0
+			public MFunction(double a, double b,double c)
 			{
 				this.a = a;
 				this.b = b;
@@ -46,6 +46,7 @@ namespace AngleMagnifier
 		A_Point a;//Point
 		MFunction m;//方程式
 		Pen pen, pen1, pen_DL;
+		SolidBrush brush;//筆刷
 		Rectangle Rec;//Catch size
 		#endregion
 
@@ -114,6 +115,7 @@ namespace AngleMagnifier
 			pen1 = new Pen(Color.FromArgb(RGB_A, 0, 255, 0), Pen_width);//Create Pen
 			pen = new Pen(Color.FromArgb(RGB_A, 0, 0, 255), Pen_width);//Create pen1
 			pen_DL = new Pen(Color.FromArgb((int)(255 * 0.7), 255, 0, 0), 6);//Create pen for draw a Dot
+			brush = new SolidBrush(Color.FromArgb(255, 128, 255, 128));
 
 			GraphicsPath path = new GraphicsPath();//picturelarge Reshape
 			path.AddEllipse(this.picturelarge.ClientRectangle);
@@ -243,19 +245,40 @@ namespace AngleMagnifier
 							inlarged = false;
 							Cursor.Position = PointToScreen(new Point((int)a.x1, (int)a.y1));
 						}
-						if (count_Line == 1)
-							G.DrawLine(pen, a.x, a.y, a.x1, a.y1);
-						else if (count_Line == 2)
-							G.DrawLine(pen1, a.x, a.y, a.x1, a.y1);
-						//IntPtr dc = G.GetHdc();
-						//G.ReleaseHdc(dc);
+						//if (count_Line == 1)
+						//	G.DrawLine(pen, a.x, a.y, a.x1, a.y1);
+						//else if (count_Line == 2)
+						//	G.DrawLine(pen1, a.x, a.y, a.x1, a.y1);
 						pictureBox.Image = IM_Form;
 						xlonger = IsXlonger();
 						GetFunction();
 						label1.Parent = pictureBox;
 						label1.Visible = true;
 						label1.Text = m.a + "X+(" + m.b + ")Y+(" + m.c + ")=0   "+xlonger.ToString();
-						
+						#region
+						if(xlonger)
+						{
+							if(a.x>a.x1)
+							{
+								int tmp = (int)a.x;
+								a.x = a.x1;
+								a.x1 = tmp;
+							}
+							for (int i = (int)a.x; i < a.x1; i++)
+								G.FillRectangle(brush, i, GetFunctionValue(i, xlonger), 1, 1);
+						}
+						else
+						{
+							if(a.y>a.y1)
+							{
+								int tmp = (int)a.y;
+								a.y = a.y1;
+								a.y1 = tmp;
+							}
+							for (int i = (int)a.y; i < a.y1; i++)
+								G.FillRectangle(brush, GetFunctionValue(i, xlonger), i, 1, 1);
+						}
+						#endregion
 						count_Pt = 0;
 						count_Line++;
 						break;
@@ -333,6 +356,19 @@ namespace AngleMagnifier
 			m.a = tmp1;
 			m.b = -(tmp);
 			m.c = -(tmp1 * a.x1) + tmp * a.y1;
+		}
+		private int GetFunctionValue(int intex,bool xlong)
+		{
+			int ans = 0;
+			if(xlong)
+			{
+				ans = (int)Math.Round((-(m.a * intex + m.c)) / m.b);
+			}
+			else
+			{
+				ans = (int)Math.Round((-(m.b * intex + m.c)) / m.a);
+			}
+			return ans;
 		}
 		private bool IsXlonger()
 		{
