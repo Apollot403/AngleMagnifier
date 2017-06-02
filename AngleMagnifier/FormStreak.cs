@@ -17,7 +17,7 @@ namespace AngleMagnifier
 		public struct MFunction
 		{
 			public double a, b, c;//ax+by+c=0
-			public MFunction(double a, double b,double c)
+			public MFunction(double a, double b, double c)
 			{
 				this.a = a;
 				this.b = b;
@@ -26,8 +26,8 @@ namespace AngleMagnifier
 		}
 		public struct A_Point
 		{
-			public float x, y,x1,y1;
-			public A_Point(float x, float y,float x1,float y1)
+			public float x, y, x1, y1;
+			public A_Point(float x, float y, float x1, float y1)
 			{
 				this.x = x;
 				this.y = y;
@@ -140,7 +140,7 @@ namespace AngleMagnifier
 						count_Line = 1;
 						catched = true;
 						TextView.Visible = false;
-						
+
 						G.CopyFromScreen(new Point((this.Location.X - PointToClient(this.Location).X),
 																				(this.Location.Y - PointToClient(this.Location).Y)),
 															new Point(0, 0), new Size(panel.Width, panel.Height));
@@ -170,7 +170,7 @@ namespace AngleMagnifier
 					}
 					catch
 					{
-						MessageBox.Show("按F鍵取得截圖", "Hint", MessageBoxButtons.OK, 
+						MessageBox.Show("按F鍵取得截圖", "Hint", MessageBoxButtons.OK,
 							MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					}
 					count_Pt = 0;
@@ -214,7 +214,7 @@ namespace AngleMagnifier
 		private void PictureBox_Click(object sender, MouseEventArgs e)
 		{
 			Color[,] colors;//[長度,厚度]
-			int colorswidth=15;
+			int colorswidth = 15;
 			bool xlonger = false;
 			if (e.Button == MouseButtons.Left)
 			{
@@ -256,38 +256,35 @@ namespace AngleMagnifier
 							inlarged = false;
 							Cursor.Position = PointToScreen(new Point((int)a.x1, (int)a.y1));
 						}
-						//if (count_Line == 1)
-						//	G.DrawLine(pen, a.x, a.y, a.x1, a.y1);
-						//else if (count_Line == 2)
-						//	G.DrawLine(pen1, a.x, a.y, a.x1, a.y1);
+
 						pictureBox.Image = IM_Form;
 						xlonger = IsXlonger();
 						GetFunction();
 						label1.Parent = pictureBox;
 						label1.Visible = true;
-						label1.Text = m.a + "X+(" + m.b + ")Y+(" + m.c + ")=0   "+xlonger.ToString();
+						label1.Text = m.a + "X+(" + m.b + ")Y+(" + m.c + ")=0   " + xlonger.ToString();
 						#region
-						if(xlonger)
+						if (xlonger)
 						{
-							if(a.x>a.x1)
+							if (a.x > a.x1)
 							{
 								int tmp = (int)a.x;
 								a.x = a.x1;
 								a.x1 = tmp;
 							}
-							colors = new Color[(int)(a.x1 - a.x),colorswidth];
+							colors = new Color[(int)(a.x1 - a.x), colorswidth];
 							for (int i = (int)a.x; i < a.x1; i++)
 							{
 								for (int j = -7; j <= 7; j++)
 								{
 									colors[i - (int)(a.x), j + 7] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
-									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger)+j, 1, 1);//
+									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger) + j, 1, 1);//
 								}
 							}
 						}
 						else
 						{
-							if(a.y>a.y1)
+							if (a.y > a.y1)
 							{
 								int tmp = (int)a.y;
 								a.y = a.y1;
@@ -299,11 +296,12 @@ namespace AngleMagnifier
 								for (int j = -7; j <= 7; j++)
 								{
 									colors[i - (int)a.y, j + 7] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + 7, i);
-									G.FillRectangle(brush, GetFunctionValue(i, xlonger)+j, i, 1, 1);//
+									G.FillRectangle(brush, GetFunctionValue(i, xlonger) + j, i, 1, 1);//
 								}
 							}
 						}
-						MessageBox.Show(colors.GetLength(0) + " " + colors.GetLength(1));
+						#endregion
+						MessageBox.Show(colors.GetLength(0) + "\n" + colors.GetLength(1));
 						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));
 						for (int i = 0; i < colors.GetLength(0); i++)
 							for (int j = 0; j < colors.GetLength(1) - 1; j++)
@@ -312,7 +310,7 @@ namespace AngleMagnifier
 							}
 						pictureBox.Image = ds;
 						label1.Visible = false;
-						#endregion
+
 
 						count_Pt = 0;
 						count_Line++;
@@ -356,7 +354,7 @@ namespace AngleMagnifier
 				Text_x.Location = new Point(x + (int)(lw * (0.5 + 0.35)), y + (int)(lw * (0.25 + 0.35)));
 			}
 		}
-	
+
 		private void FormStreak_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			try
@@ -392,10 +390,10 @@ namespace AngleMagnifier
 			m.b = -(tmp);
 			m.c = -(tmp1 * a.x1) + tmp * a.y1;
 		}
-		private int GetFunctionValue(int intex,bool xlong)
+		private int GetFunctionValue(int intex, bool xlong)
 		{
 			int ans = 0;
-			if(xlong)
+			if (xlong)
 			{
 				ans = (int)Math.Round((-(m.a * intex + m.c)) / m.b);
 			}
