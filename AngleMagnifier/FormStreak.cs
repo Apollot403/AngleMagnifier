@@ -115,7 +115,7 @@ namespace AngleMagnifier
 			pen1 = new Pen(Color.FromArgb(RGB_A, 0, 255, 0), Pen_width);//Create Pen
 			pen = new Pen(Color.FromArgb(RGB_A, 0, 0, 255), Pen_width);//Create pen1
 			pen_DL = new Pen(Color.FromArgb((int)(255 * 0.7), 255, 0, 0), 6);//Create pen for draw a Dot
-			brush = new SolidBrush(Color.FromArgb(255, 128, 255, 128));
+			brush = new SolidBrush(Color.FromArgb(127, 128, 255, 128));//Create Brush draw in dev
 
 			GraphicsPath path = new GraphicsPath();//picturelarge Reshape
 			path.AddEllipse(this.picturelarge.ClientRectangle);
@@ -154,7 +154,7 @@ namespace AngleMagnifier
 						panel.Visible = false;
 					}
 					#endregion
-					break;//Try Catch function unsccess
+					break;
 
 				case Keys.D:
 					#region 清除
@@ -163,6 +163,15 @@ namespace AngleMagnifier
 						Timer1.Enabled = false;
 						Text_x.Visible = false;
 						Cursor.Show();
+					}
+					try
+					{
+						Tmp.Dispose();
+					}
+					catch
+					{
+						MessageBox.Show("按F鍵取得截圖", "Hint", MessageBoxButtons.OK, 
+							MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					}
 					count_Pt = 0;
 					count_Line = 1;
@@ -204,6 +213,8 @@ namespace AngleMagnifier
 
 		private void PictureBox_Click(object sender, MouseEventArgs e)
 		{
+			Color[,] colors;//[長度,厚度]
+			int colorswidth=15;
 			bool xlonger = false;
 			if (e.Button == MouseButtons.Left)
 			{
@@ -264,8 +275,15 @@ namespace AngleMagnifier
 								a.x = a.x1;
 								a.x1 = tmp;
 							}
+							colors = new Color[(int)(a.x1 - a.x),colorswidth];
 							for (int i = (int)a.x; i < a.x1; i++)
-								G.FillRectangle(brush, i, GetFunctionValue(i, xlonger), 1, 1);
+							{
+								for (int j = -7; j <= 7; j++)
+								{
+									colors[i - (int)(a.x), j + 7] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
+									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger)+j, 1, 1);//
+								}
+							}
 						}
 						else
 						{
@@ -275,10 +293,27 @@ namespace AngleMagnifier
 								a.y = a.y1;
 								a.y1 = tmp;
 							}
+							colors = new Color[(int)(a.y1 - a.y), colorswidth];
 							for (int i = (int)a.y; i < a.y1; i++)
-								G.FillRectangle(brush, GetFunctionValue(i, xlonger), i, 1, 1);
+							{
+								for (int j = -7; j <= 7; j++)
+								{
+									colors[i - (int)a.y, j + 7] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + 7, i);
+									G.FillRectangle(brush, GetFunctionValue(i, xlonger)+j, i, 1, 1);//
+								}
+							}
 						}
+						MessageBox.Show(colors.GetLength(0) + " " + colors.GetLength(1));
+						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));
+						for (int i = 0; i < colors.GetLength(0); i++)
+							for (int j = 0; j < colors.GetLength(1) - 1; j++)
+							{
+								ds.SetPixel(i, j, colors[i, j]);
+							}
+						pictureBox.Image = ds;
+						label1.Visible = false;
 						#endregion
+
 						count_Pt = 0;
 						count_Line++;
 						break;

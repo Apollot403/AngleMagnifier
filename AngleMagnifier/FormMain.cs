@@ -96,7 +96,7 @@ namespace AngleMagnifier
 			pictureBox.Location = p;
 
 			Rec = new Rectangle(0, 0, lw, lw);//Create Rectangle for catch
-			pen1 = new Pen(Color.FromArgb(RGB_A, 0, 255, 0), Pen_width);//Create Pen
+			pen1 = new Pen(Color.FromArgb(RGB_A, 128, 255, 128), Pen_width);//Create Pen
 			pen = new Pen(Color.FromArgb(RGB_A, 0, 0, 255), Pen_width);//Create pen1
 			pen_DL = new Pen(Color.FromArgb((int)(255 * 0.7), 255, 0, 0), 6);//Create pen for draw a Dot
 
@@ -146,6 +146,15 @@ namespace AngleMagnifier
 						Timer1.Enabled = false;
 						Text_x.Visible = false;
 						Cursor.Show();
+					}
+					try
+					{
+						Tmp.Dispose();
+					}
+					catch
+					{
+						MessageBox.Show("按F鍵取得截圖", "Hint", MessageBoxButtons.OK, 
+							MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					}
 					count_Pt = 0;
 					count_Angle = 1;
