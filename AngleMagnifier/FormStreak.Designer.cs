@@ -36,7 +36,7 @@
 			this.TextView = new System.Windows.Forms.Label();
 			this.panel = new System.Windows.Forms.Panel();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.FunctionText = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.picturelarge)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -98,18 +98,18 @@
 			this.pictureBox.Visible = false;
 			this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PictureBox_Click);
 			// 
-			// label1
+			// FunctionText
 			// 
-			this.label1.AutoSize = true;
-			this.label1.BackColor = System.Drawing.Color.Transparent;
-			this.label1.Font = new System.Drawing.Font("微軟正黑體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.label1.Location = new System.Drawing.Point(241, 12);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(11, 17);
-			this.label1.TabIndex = 14;
-			this.label1.Text = ".";
-			this.label1.Visible = false;
+			this.FunctionText.AutoSize = true;
+			this.FunctionText.BackColor = System.Drawing.Color.Transparent;
+			this.FunctionText.Font = new System.Drawing.Font("微軟正黑體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.FunctionText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.FunctionText.Location = new System.Drawing.Point(241, 12);
+			this.FunctionText.Name = "FunctionText";
+			this.FunctionText.Size = new System.Drawing.Size(11, 18);
+			this.FunctionText.TabIndex = 14;
+			this.FunctionText.Text = ".";
+			this.FunctionText.Visible = false;
 			// 
 			// FormStreak
 			// 
@@ -117,7 +117,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(1064, 676);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.FunctionText);
 			this.Controls.Add(this.Text_x);
 			this.Controls.Add(this.picturelarge);
 			this.Controls.Add(this.TextView);
@@ -147,6 +147,6 @@
 		private System.Windows.Forms.Label TextView;
 		private System.Windows.Forms.Panel panel;
 		private System.Windows.Forms.PictureBox pictureBox;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label FunctionText;
 	}
 }

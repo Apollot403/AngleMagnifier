@@ -107,7 +107,7 @@ namespace AngleMagnifier
 			picturelarge.Size = new Size(lw, lw);//Edit Needs
 
 			panel.Location = p;
-			label1.Location = p;
+			FunctionText.Location = p;
 			TextView.Location = new Point(0, this.ClientSize.Height - TextView.Height);
 			pictureBox.Location = p;
 
@@ -177,7 +177,7 @@ namespace AngleMagnifier
 					count_Line = 1;
 					catched = false;
 					inlarged = false;//Flag
-					label1.Visible = false;
+					FunctionText.Visible = false;
 					pictureBox.Visible = false;
 					picturelarge.Visible = false;
 					pictureBox.Image = null;
@@ -260,10 +260,12 @@ namespace AngleMagnifier
 						pictureBox.Image = IM_Form;
 						xlonger = IsXlonger();
 						GetFunction();
-						label1.Parent = pictureBox;
-						label1.Visible = true;
-						label1.Text = m.a + "X+(" + m.b + ")Y+(" + m.c + ")=0   " + xlonger.ToString();
-						#region
+						FunctionText.Parent = pictureBox;
+						FunctionText.Visible = true;
+						FunctionText.Text = m.a + "X+(" + m.b + ")Y+(" + m.c + ")=0   " + xlonger.ToString();
+						FunctionText.Location = new Point(this.ClientSize.Width - FunctionText.Width, 0);
+
+						#region 取得線區
 						if (xlonger)
 						{
 							if (a.x > a.x1)
@@ -278,7 +280,7 @@ namespace AngleMagnifier
 								for (int j = -7; j <= 7; j++)
 								{
 									colors[i - (int)(a.x), j + 7] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
-									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger) + j, 1, 1);//
+									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger) + j, 1, 1);//畫出擷取線
 								}
 							}
 						}
@@ -295,23 +297,30 @@ namespace AngleMagnifier
 							{
 								for (int j = -7; j <= 7; j++)
 								{
-									colors[i - (int)a.y, j + 7] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + 7, i);
-									G.FillRectangle(brush, GetFunctionValue(i, xlonger) + j, i, 1, 1);//
+									colors[i - (int)a.y, j + 7] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + j, i);
+									G.FillRectangle(brush, GetFunctionValue(i, xlonger) + j, i, 1, 1);//劃出擷取線
 								}
 							}
 						}
 						#endregion
-						MessageBox.Show(colors.GetLength(0) + "\n" + colors.GetLength(1));
-						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));
-						for (int i = 0; i < colors.GetLength(0); i++)
-							for (int j = 0; j < colors.GetLength(1) - 1; j++)
+						
+						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));//Bitmap 條數判斷
+						
+						Parallel.For(0, colors.GetLength(0), (i, loopState) =>
+						 {
+							 for (int j = 0; j < colors.GetLength(1); j++)
+							 {
+								 int t = Convert.ToInt32(colors[i, j].R * 0.3) + Convert.ToInt32(colors[i, j].G * 0.59) + Convert.ToInt32(colors[i, j].B * 0.11);
+								 colors[i, j] = Color.FromArgb(255, t, t, t);
+							 }
+						 });
+
+						for (int i = 0; i < colors.GetLength(0); i++)//Paint Picture to Screen
+							for (int j = 0; j < colors.GetLength(1); j++)
 							{
 								ds.SetPixel(i, j, colors[i, j]);
 							}
 						pictureBox.Image = ds;
-						label1.Visible = false;
-
-
 						count_Pt = 0;
 						count_Line++;
 						break;
@@ -382,6 +391,7 @@ namespace AngleMagnifier
 				}
 			}
 		}
+
 		private void GetFunction()
 		{
 			float tmp = a.x - a.x1;
@@ -390,6 +400,7 @@ namespace AngleMagnifier
 			m.b = -(tmp);
 			m.c = -(tmp1 * a.x1) + tmp * a.y1;
 		}
+
 		private int GetFunctionValue(int intex, bool xlong)
 		{
 			int ans = 0;
@@ -403,6 +414,7 @@ namespace AngleMagnifier
 			}
 			return ans;
 		}
+
 		private bool IsXlonger()
 		{
 			if (Math.Abs(a.x - a.x1) >= Math.Abs(a.y - a.y1))
