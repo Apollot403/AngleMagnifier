@@ -37,6 +37,7 @@
 			this.panel = new System.Windows.Forms.Panel();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
 			this.FunctionText = new System.Windows.Forms.Label();
+			this.Textshow = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.picturelarge)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -83,7 +84,7 @@
 			// panel
 			// 
 			this.panel.BackColor = System.Drawing.Color.Maroon;
-			this.panel.Location = new System.Drawing.Point(12, 12);
+			this.panel.Location = new System.Drawing.Point(31, 40);
 			this.panel.Name = "panel";
 			this.panel.Size = new System.Drawing.Size(66, 30);
 			this.panel.TabIndex = 8;
@@ -111,12 +112,26 @@
 			this.FunctionText.Text = ".";
 			this.FunctionText.Visible = false;
 			// 
+			// Textshow
+			// 
+			this.Textshow.AutoSize = true;
+			this.Textshow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+			this.Textshow.Font = new System.Drawing.Font("微軟正黑體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			this.Textshow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.Textshow.Location = new System.Drawing.Point(0, 0);
+			this.Textshow.Name = "Textshow";
+			this.Textshow.Size = new System.Drawing.Size(24, 40);
+			this.Textshow.TabIndex = 15;
+			this.Textshow.Text = ".";
+			this.Textshow.Visible = false;
+			// 
 			// FormStreak
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(1064, 676);
+			this.Controls.Add(this.Textshow);
 			this.Controls.Add(this.FunctionText);
 			this.Controls.Add(this.Text_x);
 			this.Controls.Add(this.picturelarge);
@@ -148,5 +163,6 @@
 		private System.Windows.Forms.Panel panel;
 		private System.Windows.Forms.PictureBox pictureBox;
 		private System.Windows.Forms.Label FunctionText;
+		private System.Windows.Forms.Label Textshow;
 	}
 }

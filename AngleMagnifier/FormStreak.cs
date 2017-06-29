@@ -171,6 +171,7 @@ namespace AngleMagnifier
 					count_Pt = 0;
 					catched = false;
 					inlarged = false;//Flag
+					Textshow.Visible = false;
 					FunctionText.Visible = false;
 					pictureBox.Visible = false;
 					picturelarge.Visible = false;
@@ -188,7 +189,6 @@ namespace AngleMagnifier
 						Cursor.Position = new Point(Cursor.Position.X - (lw / 2), Cursor.Position.Y - (lw / 4));
 						magn2x = true;
 						inlarged = true;
-						Timer1.Enabled = true;
 						picturelarge.Visible = true;
 						Text_x.Visible = true;
 						TextView.Text = "點左鍵選取點   點右鍵可取消放大鏡";
@@ -209,7 +209,7 @@ namespace AngleMagnifier
 		{
 			Color[,] colors;//[長度,厚度]
 			int ave = 0;//color average
-			int colorswidth = 5;
+			int colorswidth = 9;
 			bool xlonger = false;
 			if (e.Button == MouseButtons.Left)
 			{
@@ -272,9 +272,9 @@ namespace AngleMagnifier
 							colors = new Color[(int)(a.x1 - a.x), colorswidth];
 							for (int i = (int)a.x; i < a.x1; i++)
 							{
-								for (int j = -2; j <= 2; j++)
+								for (int j = -4; j <= 4; j++)
 								{
-									colors[i - (int)(a.x), j + 2] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
+									colors[i - (int)(a.x), j + 4] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
 									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger) + j, 1, 1);//畫出擷取線
 								}
 							}
@@ -290,9 +290,9 @@ namespace AngleMagnifier
 							colors = new Color[(int)(a.y1 - a.y), colorswidth];
 							for (int i = (int)a.y; i < a.y1; i++)
 							{
-								for (int j = -2; j <= 2; j++)
+								for (int j = -4; j <= 4; j++)
 								{
-									colors[i - (int)a.y, j + 2] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + j, i);
+									colors[i - (int)a.y, j + 4] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + j, i);
 									G.FillRectangle(brush, GetFunctionValue(i, xlonger) + j, i, 1, 1);//劃出擷取線
 								}
 							}
@@ -316,7 +316,7 @@ namespace AngleMagnifier
 							}
 						//測試存圖
 						ds.Save(@"C:\Users\Apollot403\Desktop\Tmp0.jpg");
-						ds = Contrast(ds, 900);
+						ds = Contrast(ds, 450);
 						for (int i = 0; i < colors.GetLength(0); i++)//Bitmap to Colors[,]
 							for (int j = 0; j < colors.GetLength(1); j++)
 							{
@@ -329,18 +329,18 @@ namespace AngleMagnifier
 						Parallel.For(0, colors.GetLength(0), i =>
 						{
 							int c = 0;
-							for (int j = 0; j < 5; j++)
+							for (int j = 0; j < colors.GetLength(1); j++)
 							{
 								if (colors[i, j].R < ave)
 									c++;
 							}
-							if (c >= 3)
-								for (int j = 0; j < 5; j++)
+							if (c >= 4)
+								for (int j = 0; j < colors.GetLength(1); j++)
 								{
 									colors[i, j] = Color.FromArgb(255, 0, 0, 0);
 								}
 							else
-								for (int j = 0; j < 5; j++)
+								for (int j = 0; j < colors.GetLength(1); j++)
 								{
 									colors[i, j] = Color.FromArgb(255, 255, 255, 255);
 								}
@@ -371,7 +371,7 @@ namespace AngleMagnifier
 								}
 								else
 								{
-									if (colors[i - 1, 0].R == 255 && colors[i, 0].R == 0)
+									if (colors[i - 2, 0].R == 255 && colors[i - 1, 0].R == 0 && colors[i, 0].R == 0)
 										linecount++;
 								}
 							}
@@ -380,7 +380,8 @@ namespace AngleMagnifier
 								;
 							}
 						}
-						//MessageBox.Show(linecount.ToString());
+						Textshow.Visible = true;
+						Textshow.Text = linecount.ToString() + "條";
 						//pictureBox.Image = ds;
 						//測試存圖
 						ds.Save(@"C:\Users\Apollot403\Desktop\TmpF.jpg");
