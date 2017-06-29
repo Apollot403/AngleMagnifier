@@ -48,7 +48,7 @@ namespace AngleMagnifier
 
 		int lw;//For Auto Size
 		byte count_Pt = 0;//點選順序
-		byte count_Line = 0;//角度次序
+		
 		bool catched = false;//截圖
 		bool inlarged = false;//放大框
 		bool magn2x = true;//放大倍數
@@ -133,7 +133,6 @@ namespace AngleMagnifier
 					if (catched == false)
 					{
 						count_Pt = 0;
-						count_Line = 1;
 						catched = true;
 						TextView.Visible = false;
 
@@ -170,7 +169,6 @@ namespace AngleMagnifier
 							MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 					}
 					count_Pt = 0;
-					count_Line = 1;
 					catched = false;
 					inlarged = false;//Flag
 					FunctionText.Visible = false;
@@ -300,11 +298,11 @@ namespace AngleMagnifier
 							}
 						}
 						#endregion
-						
+
 						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));//Bitmap for 條數判斷
 
 						Parallel.For(0, colors.GetLength(0), i => //黑白化
-						 {
+						{
 							 for (int j = 0; j < colors.GetLength(1); j++)
 							 {
 								 int t = Convert.ToInt32(colors[i, j].R * 0.3) + Convert.ToInt32(colors[i, j].G * 0.59) + Convert.ToInt32(colors[i, j].B * 0.11);
@@ -317,15 +315,17 @@ namespace AngleMagnifier
 								ds.SetPixel(i, j, colors[i, j]);
 							}
 						//測試存圖
-						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp0.jpg");
+						ds.Save(@"C:\Users\Apollot403\Desktop\Tmp0.jpg");
 						ds = Contrast(ds, 900);
-						for(int i=0;i<colors.GetLength(0);i++)//Bitmap to Colors[,]
-							for(int j=0;j<colors.GetLength(1);j++)
+						for (int i = 0; i < colors.GetLength(0); i++)//Bitmap to Colors[,]
+							for (int j = 0; j < colors.GetLength(1); j++)
 							{
 								colors[i, j] = ds.GetPixel(i, j);
 								ave += colors[i, j].R;
 							}
 						ave /= colors.Length;//像素平均值
+						//測試存圖
+						ds.Save(@"C:\Users\Apollot403\Desktop\Tmp1.jpg");
 						Parallel.For(0, colors.GetLength(0), i =>
 						{
 							int c = 0;
@@ -345,22 +345,49 @@ namespace AngleMagnifier
 									colors[i, j] = Color.FromArgb(255, 255, 255, 255);
 								}
 						});
-						//測試存圖
-						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp1.jpg");
-						for (int i = 0; i < colors.GetLength(0); i++)//Colors[,] to Bitmap
+						byte linecount = 0;
+						bool isblockstart = false;
+
+						if(colors[0,0].R==0)
+						{
+							isblockstart = true;
+							linecount++;
+						}
+
+						for (int i = 0; i < colors.GetLength(0); i++)//Colors[,] to Bitmap 
+						{
 							for (int j = 0; j < colors.GetLength(1); j++)
 							{
 								ds.SetPixel(i, j, colors[i, j]);
 							}
-						
+							try
+							{
+								if (isblockstart)
+								{
+									if (colors[i, 0].R == 0)
+										continue;
+									else if (colors[i, 0].R == 255)
+										isblockstart = false;
+								}
+								else
+								{
+									if (colors[i - 1, 0].R == 255 && colors[i, 0].R == 0)
+										linecount++;
+								}
+							}
+							catch
+							{
+								;
+							}
+						}
+						//MessageBox.Show(linecount.ToString());
 						//pictureBox.Image = ds;
 						//測試存圖
-						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp2.jpg");
+						ds.Save(@"C:\Users\Apollot403\Desktop\TmpF.jpg");
 						count_Pt = 0;
-						count_Line++;
 						break;
-				}
-			}
+				}//Switch
+			}//IF
 			else if (e.Button == MouseButtons.Right)
 			{
 				if (inlarged == true)
@@ -373,7 +400,7 @@ namespace AngleMagnifier
 					Cursor.Show();
 				}
 			}
-		}
+		}//Function
 
 		private void Timer1_Tick(object sender, EventArgs e)
 		{
