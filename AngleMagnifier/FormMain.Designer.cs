@@ -58,10 +58,10 @@ namespace AngleMagnifier
 			// 
 			// panel
 			// 
-			this.panel.BackColor = System.Drawing.Color.Silver;
+			this.panel.BackColor = System.Drawing.Color.Maroon;
 			this.panel.Location = new System.Drawing.Point(12, 12);
 			this.panel.Name = "panel";
-			this.panel.Size = new System.Drawing.Size(100, 100);
+			this.panel.Size = new System.Drawing.Size(68, 30);
 			this.panel.TabIndex = 1;
 			// 
 			// pictureBox
@@ -145,7 +145,7 @@ namespace AngleMagnifier
 			this.MaximizeBox = false;
 			this.Name = "FormMain";
 			this.Text = "Form1";
-			this.TransparencyKey = System.Drawing.Color.Silver;
+			this.TransparencyKey = System.Drawing.Color.Maroon;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_Closing);
 			this.Load += new System.EventHandler(this.FormMain_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);

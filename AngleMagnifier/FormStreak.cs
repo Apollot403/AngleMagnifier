@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
+using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -214,7 +210,8 @@ namespace AngleMagnifier
 		private void PictureBox_Click(object sender, MouseEventArgs e)
 		{
 			Color[,] colors;//[長度,厚度]
-			int colorswidth = 15;
+			int ave = 0;//color average
+			int colorswidth = 5;
 			bool xlonger = false;
 			if (e.Button == MouseButtons.Left)
 			{
@@ -277,9 +274,9 @@ namespace AngleMagnifier
 							colors = new Color[(int)(a.x1 - a.x), colorswidth];
 							for (int i = (int)a.x; i < a.x1; i++)
 							{
-								for (int j = -7; j <= 7; j++)
+								for (int j = -2; j <= 2; j++)
 								{
-									colors[i - (int)(a.x), j + 7] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
+									colors[i - (int)(a.x), j + 2] = IM_Form.GetPixel(i, GetFunctionValue(i, xlonger) + j);
 									G.FillRectangle(brush, i, GetFunctionValue(i, xlonger) + j, 1, 1);//畫出擷取線
 								}
 							}
@@ -295,18 +292,18 @@ namespace AngleMagnifier
 							colors = new Color[(int)(a.y1 - a.y), colorswidth];
 							for (int i = (int)a.y; i < a.y1; i++)
 							{
-								for (int j = -7; j <= 7; j++)
+								for (int j = -2; j <= 2; j++)
 								{
-									colors[i - (int)a.y, j + 7] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + j, i);
+									colors[i - (int)a.y, j + 2] = IM_Form.GetPixel(GetFunctionValue(i, xlonger) + j, i);
 									G.FillRectangle(brush, GetFunctionValue(i, xlonger) + j, i, 1, 1);//劃出擷取線
 								}
 							}
 						}
 						#endregion
 						
-						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));//Bitmap 條數判斷
-						
-						Parallel.For(0, colors.GetLength(0), (i, loopState) =>
+						Bitmap ds = new Bitmap(colors.GetLength(0), colors.GetLength(1));//Bitmap for 條數判斷
+
+						Parallel.For(0, colors.GetLength(0), i => //黑白化
 						 {
 							 for (int j = 0; j < colors.GetLength(1); j++)
 							 {
@@ -314,13 +311,51 @@ namespace AngleMagnifier
 								 colors[i, j] = Color.FromArgb(255, t, t, t);
 							 }
 						 });
-
-						for (int i = 0; i < colors.GetLength(0); i++)//Paint Picture to Screen
+						for (int i = 0; i < colors.GetLength(0); i++)//Colors[,] to Bitmap
 							for (int j = 0; j < colors.GetLength(1); j++)
 							{
 								ds.SetPixel(i, j, colors[i, j]);
 							}
-						pictureBox.Image = ds;
+						//測試存圖
+						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp0.jpg");
+						ds = Contrast(ds, 900);
+						for(int i=0;i<colors.GetLength(0);i++)//Bitmap to Colors[,]
+							for(int j=0;j<colors.GetLength(1);j++)
+							{
+								colors[i, j] = ds.GetPixel(i, j);
+								ave += colors[i, j].R;
+							}
+						ave /= colors.Length;//像素平均值
+						Parallel.For(0, colors.GetLength(0), i =>
+						{
+							int c = 0;
+							for (int j = 0; j < 5; j++)
+							{
+								if (colors[i, j].R < ave)
+									c++;
+							}
+							if (c >= 3)
+								for (int j = 0; j < 5; j++)
+								{
+									colors[i, j] = Color.FromArgb(255, 0, 0, 0);
+								}
+							else
+								for (int j = 0; j < 5; j++)
+								{
+									colors[i, j] = Color.FromArgb(255, 255, 255, 255);
+								}
+						});
+						//測試存圖
+						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp1.jpg");
+						for (int i = 0; i < colors.GetLength(0); i++)//Colors[,] to Bitmap
+							for (int j = 0; j < colors.GetLength(1); j++)
+							{
+								ds.SetPixel(i, j, colors[i, j]);
+							}
+						
+						//pictureBox.Image = ds;
+						//測試存圖
+						//ds.Save(@"C:\Users\Apollot403\Desktop\Tmp2.jpg");
 						count_Pt = 0;
 						count_Line++;
 						break;
@@ -392,6 +427,9 @@ namespace AngleMagnifier
 			}
 		}
 
+		/// <summary>
+		/// 計算方程式
+		/// </summary>
 		private void GetFunction()
 		{
 			float tmp = a.x - a.x1;
@@ -400,7 +438,12 @@ namespace AngleMagnifier
 			m.b = -(tmp);
 			m.c = -(tmp1 * a.x1) + tmp * a.y1;
 		}
-
+		/// <summary>
+		/// 截圖像素 位置函數
+		/// </summary>
+		/// <param name="intex">函數</param>
+		/// <param name="xlong">X Y誰長?</param>
+		/// <returns></returns>
 		private int GetFunctionValue(int intex, bool xlong)
 		{
 			int ans = 0;
@@ -414,13 +457,68 @@ namespace AngleMagnifier
 			}
 			return ans;
 		}
-
+		/// <summary>
+		/// X Y 長度比較
+		/// </summary>
+		/// <returns></returns>
 		private bool IsXlonger()
 		{
 			if (Math.Abs(a.x - a.x1) >= Math.Abs(a.y - a.y1))
 				return true;
 			else
 				return false;
+		}
+		/// <summary>
+		/// 高對比
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="effectThreshold"> 高對比程度 -100~100</param>
+		/// <returns></returns>
+		public Bitmap Contrast(Bitmap src, float effectThreshold)
+		{
+			// 依照 Format24bppRgb 每三個表示一 Pixel 0: 藍 1: 綠 2: 紅
+			BitmapData bitmapData = src.LockBits(new Rectangle(0, 0, src.Width, src.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+			// 判斷是否在 -100~100
+			effectThreshold = effectThreshold < -100 ? -100 : effectThreshold;
+			effectThreshold = effectThreshold > 1000 ? 1000 : effectThreshold;
+			effectThreshold = (float)((100.0 + effectThreshold) / 100.0);
+			effectThreshold *= effectThreshold;
+			unsafe
+			{
+				// 抓住第一個 Pixel 第一個數值
+				byte* p = (byte*)(void*)bitmapData.Scan0;
+
+				// 跨步值 - 寬度 *3 可以算出畸零地 之後跳到下一行
+				int nOffset = bitmapData.Stride - src.Width * 3;
+				for (int y = 0; y < src.Height; y++)
+				{
+					for (int x = 0; x < src.Width; x++)
+					{
+						double buffer = 0;
+						// 公式  (Red/255)-0.5= 偏離中間值程度
+						// ((偏離中間值程度 * 影響範圍)+0.4 ) * 255
+						buffer = ((((p[2] / 255.0) - 0.5) * effectThreshold) + 0.5) * 255.0;
+						buffer = buffer > 255 ? 255 : buffer;
+						buffer = buffer < 0 ? 0 : buffer;
+						p[2] = (byte)buffer;
+
+						buffer = ((((p[1] / 255.0) - 0.5) * effectThreshold) + 0.5) * 255.0;
+						buffer = buffer > 255 ? 255 : buffer;
+						buffer = buffer < 0 ? 0 : buffer;
+						p[1] = (byte)buffer;
+						buffer = ((((p[0] / 255.0) - 0.5) * effectThreshold) + 0.5) * 255.0;
+						buffer = buffer > 255 ? 255 : buffer;
+						buffer = buffer < 0 ? 0 : buffer;
+						p[0] = (byte)buffer;
+						// 跳去下一個 Pixel
+						p += 3;
+					}
+					// 跨越畸零地
+					p += nOffset;
+				}
+			}
+			src.UnlockBits(bitmapData);
+			return src;
 		}
 	}////Class
 }//////NameSpace

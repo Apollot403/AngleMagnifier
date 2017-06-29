@@ -82,10 +82,10 @@
 			// 
 			// panel
 			// 
-			this.panel.BackColor = System.Drawing.Color.Silver;
+			this.panel.BackColor = System.Drawing.Color.Maroon;
 			this.panel.Location = new System.Drawing.Point(12, 12);
 			this.panel.Name = "panel";
-			this.panel.Size = new System.Drawing.Size(100, 100);
+			this.panel.Size = new System.Drawing.Size(66, 30);
 			this.panel.TabIndex = 8;
 			// 
 			// pictureBox
@@ -128,7 +128,7 @@
 			this.MaximizeBox = false;
 			this.Name = "FormStreak";
 			this.Text = "FormStreak";
-			this.TransparencyKey = System.Drawing.Color.Silver;
+			this.TransparencyKey = System.Drawing.Color.Maroon;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormStreak_FormClosing);
 			this.Load += new System.EventHandler(this.FormStreak_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormStreak_KeyDown);
