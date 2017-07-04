@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -315,7 +316,7 @@ namespace AngleMagnifier
 								ds.SetPixel(i, j, colors[i, j]);
 							}
 						//測試存圖
-						ds.Save(@"C:\Users\Apollot403\Desktop\Tmp0.jpg");
+						ds.Save(@".\Tmp0.jpg");
 						ds = Contrast(ds, 450);
 						for (int i = 0; i < colors.GetLength(0); i++)//Bitmap to Colors[,]
 							for (int j = 0; j < colors.GetLength(1); j++)
@@ -325,7 +326,7 @@ namespace AngleMagnifier
 							}
 						ave /= colors.Length;//像素平均值
 						//測試存圖
-						ds.Save(@"C:\Users\Apollot403\Desktop\Tmp1.jpg");
+						ds.Save(@".\Tmp1.jpg");
 						Parallel.For(0, colors.GetLength(0), i =>
 						{
 							int c = 0;
@@ -334,7 +335,7 @@ namespace AngleMagnifier
 								if (colors[i, j].R < ave)
 									c++;
 							}
-							if (c >= 4)
+							if (c > 4)
 								for (int j = 0; j < colors.GetLength(1); j++)
 								{
 									colors[i, j] = Color.FromArgb(255, 0, 0, 0);
@@ -384,7 +385,7 @@ namespace AngleMagnifier
 						Textshow.Text = linecount.ToString() + "條";
 						//pictureBox.Image = ds;
 						//測試存圖
-						ds.Save(@"C:\Users\Apollot403\Desktop\TmpF.jpg");
+						ds.Save(@".\TmpF.jpg");
 						count_Pt = 0;
 						break;
 				}//Switch
@@ -453,6 +454,10 @@ namespace AngleMagnifier
 					Text_x.Text = "X2";
 				}
 			}
+		}
+		private void Textshow_Click(object sender, EventArgs e)
+		{
+			Process.Start(@".\Tmp0.jpg");
 		}
 
 		/// <summary>

@@ -124,6 +124,7 @@
 			this.Textshow.TabIndex = 15;
 			this.Textshow.Text = ".";
 			this.Textshow.Visible = false;
+			this.Textshow.Click += new System.EventHandler(this.Textshow_Click);
 			// 
 			// FormStreak
 			// 
